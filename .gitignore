@@ -1,3 +1,5 @@
 # Ignore file cấu hình cục bộ
 *.log
 *.env
+api-gateway/.env
+chat-service/.env
