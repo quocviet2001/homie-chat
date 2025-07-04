@@ -10,6 +10,7 @@ function Profile({ user, setUser }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   useEffect(() => {
     if (user) {
@@ -28,7 +29,7 @@ function Profile({ user, setUser }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put('http://localhost:8000/users/', formData);
+      const response = await axios.put(`${API_URL}/users/`, formData);
       setUser(response.data.user);
       setSuccess('Profile updated successfully');
       setError(null);

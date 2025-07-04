@@ -2,17 +2,18 @@ from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 import os
 
-MONGO_URI = os.getenv("MONGO_URI")
+MONGO_HOST = os.getenv("MONGO_HOST", "mongodb")
+MONGO_DB = os.getenv("MONGO_DB", "homiechat")
 
 # Kết nối với MongoDB
 try:
-    client = MongoClient(MONGO_URI)
+    client = MongoClient(f"mongodb://{MONGO_HOST}:27017")
     client.admin.command('ping')
     print("MongoDB connection successful")
 except ConnectionFailure:
     print("MongoDB connection failed")
 
-db = client["homie_chat"]
+db = client[MONGO_DB]
 conversations_collection = db["conversations"]
 messages_collection = db["messages"]
 

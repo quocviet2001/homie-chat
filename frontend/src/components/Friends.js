@@ -11,6 +11,7 @@ function Friends() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   useEffect(() => {
     fetchFriends();
@@ -19,7 +20,7 @@ function Friends() {
 
   const fetchFriends = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/users/friends");
+      const response = await axios.get(`${API_URL}/users/friends`);
       setFriends(response.data);
     } catch (error) {
       setError(error.response?.data?.error || "Failed to fetch friends");
@@ -29,7 +30,7 @@ function Friends() {
   const fetchFriendRequests = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/users/friend-requests"
+        `${API_URL}/users/friend-requests`
       );
       setFriendRequests(response.data);
     } catch (error) {
@@ -47,7 +48,7 @@ function Friends() {
       }
       try {
         const response = await axios.get(
-          "http://localhost:8000/users/friends/search",
+          `${API_URL}/users/friends/search`,
           {
             params: { query },
           }
@@ -69,7 +70,7 @@ function Friends() {
 
   const sendFriendRequest = async (receiverId) => {
     try {
-      await axios.post("http://localhost:8000/users/friend-requests", {
+      await axios.post(`${API_URL}/users/friend-requests`, {
         receiver_id: receiverId,
       });
       setSuccess("Friend request sent successfully");
@@ -86,7 +87,7 @@ function Friends() {
 
   const respondFriendRequest = async (requestId, status) => {
     try {
-      await axios.put("http://localhost:8000/users/friend-requests", {
+      await axios.put(`${API_URL}/users/friend-requests`, {
         request_id: requestId,
         status,
       });
@@ -114,7 +115,7 @@ function Friends() {
     try {
       // Lấy danh sách hộp thoại
       const convResponse = await axios.get(
-        "http://localhost:8000/chat/conversations"
+        `${API_URL}/chat/conversations`
       );
       const conversations = convResponse.data;
 
@@ -131,7 +132,7 @@ function Friends() {
       } else {
         // Nếu không, tạo hộp thoại mới
         const response = await axios.post(
-          "http://localhost:8000/chat/conversations",
+          `${API_URL}/chat/conversations`,
           { friend_id: friendId.toString() }
         );
         navigate(`/chat/${response.data._id}`);

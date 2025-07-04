@@ -49,7 +49,6 @@ async def websocket_endpoint(websocket: WebSocket, conversation_id: str, token: 
         await websocket.close(code=1008, reason="Internal server error")
 
 async def forward_client_to_service(websocket: WebSocket, service_ws: websockets.WebSocketClientProtocol):
-    """Chuyển tin nhắn từ client đến Chat Service"""
     try:
         while True:
             data = await websocket.receive_text()
@@ -60,7 +59,6 @@ async def forward_client_to_service(websocket: WebSocket, service_ws: websockets
         await websocket.send_json({"error": str(e)})
 
 async def forward_service_to_client(websocket: WebSocket, service_ws: websockets.WebSocketClientProtocol):
-    """Chuyển tin nhắn từ Chat Service đến client"""
     try:
         while True:
             response = await service_ws.recv()

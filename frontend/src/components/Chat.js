@@ -12,6 +12,8 @@ function Chat({ user }) {
   const [endDate, setEndDate] = useState("");
   const { conversationId } = useParams();
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const WS_URL =  process.env.REACT_APP_WS_URL || 'ws://localhost:8000';
 
   useEffect(() => {
     fetchMessages();
@@ -25,7 +27,7 @@ function Chat({ user }) {
   const fetchMessages = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/chat/conversations/${conversationId}/messages`
+        `${API_URL}/chat/conversations/${conversationId}/messages`
       );
       setMessages(response.data);
     } catch (error) {
@@ -36,7 +38,7 @@ function Chat({ user }) {
   const connectWebSocket = () => {
     const token = localStorage.getItem("token");
     const websocket = new WebSocket(
-      `ws://localhost:8000/ws/chat/${conversationId}?token=${token}`
+      `${WS_URL}/ws/chat/${conversationId}?token=${token}`
     );
     websocket.onmessage = (event) => {
       const message = JSON.parse(event.data);
@@ -70,7 +72,7 @@ function Chat({ user }) {
       if (startDate) params.start_date = startDate;
       if (endDate) params.end_date = endDate;
       const response = await axios.get(
-        "http://localhost:8000/chat/conversations/messages/search",
+        `${API_URL}/chat/conversations/messages/search`,
         { params }
       );
       setMessages(response.data);

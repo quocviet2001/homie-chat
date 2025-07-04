@@ -1,11 +1,5 @@
 from fastapi import FastAPI
-from dotenv import load_dotenv
-from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
-
-env_path = Path(__file__).resolve().parent.parent / ".env"
-load_dotenv(dotenv_path=env_path)
-
 from .routes.conversation import router as conversation_router
 from .websocket.chat import router as websocket_router
 

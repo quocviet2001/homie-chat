@@ -7,11 +7,13 @@ function Login({ setUser, setToken }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/users/login', { email, password });
+      const response = await axios.post(`${API_URL}/users/login`, { email, password });
       setUser(response.data.user);
       setToken(response.data.token);
       localStorage.setItem('token', response.data.token);

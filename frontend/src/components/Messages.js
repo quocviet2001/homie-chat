@@ -6,6 +6,7 @@ function Messages({ user }) {
   const [conversations, setConversations] = useState([]);
   const [friends, setFriends] = useState([]); 
   const [error, setError] = useState(null);
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   useEffect(() => {
     fetchFriends(); 
@@ -14,7 +15,7 @@ function Messages({ user }) {
 
   const fetchFriends = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/users/friends');
+      const response = await axios.get(`${API_URL}/users/friends`);
       setFriends(response.data);
     } catch (error) {
       setError(error.response?.data?.detail || error.response?.data?.error || 'Failed to fetch friends');
@@ -23,7 +24,7 @@ function Messages({ user }) {
 
   const fetchConversations = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/chat/conversations');
+      const response = await axios.get(`${API_URL}/chat/conversations`);
       setConversations(response.data);
       setError(null);
     } catch (error) {

@@ -12,6 +12,7 @@ function Register({ setUser, setToken }) {
   });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,7 +21,7 @@ function Register({ setUser, setToken }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/users/register', formData);
+      const response = await axios.post(`${API_URL}/users/register`, formData);
       setUser(response.data.user);
       setToken(response.data.token);
       localStorage.setItem('token', response.data.token);

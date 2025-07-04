@@ -12,22 +12,23 @@ import axios from 'axios';
 function App() {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      axios.get('http://localhost:8000/users/')
+      axios.get(`${API_URL}/users/`)
         .then(response => setUser(response.data))
         .catch(() => {
           setToken(null);
           localStorage.removeItem('token');
         });
     }
-  }, [token]);
+  }, [token, API_URL]);
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:8000/users/logout');
+      await axios.post(`${API_URL}/users/logout`);
       setUser(null);
       setToken(null);
       localStorage.removeItem('token');

@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    environment:
+      - APP_NAME=Laravel
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=${POSTGRES_DB}
+      - DB_USERNAME=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - APP_KEY=${APP_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - postgres
+    networks:
+      - homie-chat-network
+    ports:
+      - "8001:8001"
+
+  chat-service:
+    build:
+      context: ./chat-service
+      dockerfile: Dockerfile
+    environment:
+      - MONGO_HOST=mongodb
+      - MONGO_DB=${MONGO_DB}
+      - JWT_SECRET=${JWT_SECRET}
+      - USER_SERVICE_URL=http://user-service:8001/api
+    depends_on:
+      - mongodb
+    networks:
+      - homie-chat-network
+    ports:
+      - "8002:8002"
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    environment:
+      - USER_SERVICE_URL=http://user-service:8001/api
+      - CHAT_SERVICE_URL=http://chat-service:8002
+      - JWT_SECRET=${JWT_SECRET}
+    networks:
+      - homie-chat-network
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      - REACT_APP_API_URL=http://api-gateway:8000
+      - REACT_APP_WS_URL=ws://api-gateway:8000
+    networks:
+      - homie-chat-network
+    ports:
+      - "3000:3000"
+
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - homie-chat-network
+
+  mongodb:
+    image: mongo:5.0
+    environment:
+      - MONGO_INITDB_DATABASE=${MONGO_DB}
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - homie-chat-network
+
+networks:
+  homie-chat-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  mongo_data:
