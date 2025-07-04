@@ -28,7 +28,7 @@ Dưới đây là các bước chi tiết để cài đặt và chạy ứng d�
 ### Bước 1: Clone repository
 1. Mở terminal và clone repository từ GitHub:
    ```bash
-   git clone https://github.com/<your-username>/homie-chat.git
+   git clone https://github.com/quocviet2001/homie-chat.git
    cd homie-chat
    ```
 
