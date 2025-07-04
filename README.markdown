@@ -56,8 +56,7 @@ Dưới đây là các bước chi tiết để cài đặt và chạy ứng d�
 
    - **APP_KEY**: Tạo key cho Laravel:
      ```bash
-     cd user-service
-     docker run --rm -v ${PWD}:/app php:8.1-fpm php artisan key:generate --show
+     docker run --rm php:8.2-cli php -r "echo 'base64:' . base64_encode(random_bytes(32)) . PHP_EOL;"
      ```
      Sao chép key (dạng `base64:...`) và dán vào `APP_KEY`.
 
