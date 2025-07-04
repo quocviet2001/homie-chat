@@ -13,7 +13,7 @@
 
 ## Yêu cầu hệ thống
 - **Docker**: Docker Desktop (Windows/Mac)
-- **Docker Compose**: Phiên bản 1.29 hoặc cao hơn.
+- **Docker Compose**: Phiên bản 2.0 hoặc cao hơn.
 
 Kiểm tra cài đặt Docker:
 ```bash
