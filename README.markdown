@@ -48,7 +48,7 @@ Dưới đây là các bước chi tiết để cài đặt và chạy ứng d�
    APP_KEY=base64:<your_laravel_app_key>
    ```
 
-   - **JWT_SECRET**: Tạo chuỗi ngẫu nhiên (32 byte):
+   - **JWT_SECRET**: Tạo chuỗi ngẫu nhiên (32 byte) sử dụng GitBash:
      ```bash
      openssl rand -hex 32
      ```
